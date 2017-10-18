@@ -1,0 +1,6 @@
+#Node
+functions/node_modules/
+
+#Config
+firebase.json
+.firebaserc
