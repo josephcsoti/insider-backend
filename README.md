@@ -1,2 +1,2 @@
 # insider-backend
-The backend that run the app Insider - WIP
+The backend that runs the app Insider - WIP
