@@ -6,7 +6,6 @@ module.exports = class Register {
 
   getFunction() {
     return event => {
-      const functions = require('firebase-functions');
 
       const user = event.data; // The Firebase user.
       const email = user.email; // The email of the user.
@@ -16,7 +15,7 @@ module.exports = class Register {
 
       // Push email to database
       return this.database.ref('/users/' + uid).child('email').set(email)
-      .then(console.log('Added new user to db: ' + email))
+      .then(console.log('SUCCESS | added new user to db: ' + email))
     };
   }
 };
