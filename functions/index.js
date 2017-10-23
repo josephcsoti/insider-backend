@@ -68,7 +68,7 @@ const insider = require('./insider-functions');
     new UpdateLobbyPlayerCount(database).getFunction()
   );
 
-  // Ready
-  exports.ReadyUp = functions.database.ref('/lobby_player_props/{pushkey}/ready').onUpdate(
-    new ReadyUp(database).getFunction()
-  );
+  // // Ready
+  // exports.ReadyUp = functions.database.ref('/lobby_player_props/{pushkey}/ready').onUpdate(
+  //   new ReadyUp(database).getFunction()
+  // );
