@@ -21,8 +21,6 @@ module.exports = class UpdatePlayerCount {
   getPlayerCount(lobbyID){
     return this.database.ref('/lobby_players/' + lobbyID).once('value')
       .then(data => {
-        console.log('data string: ' + data.toString());
-        console.log('players num: ' + data.numChildren());
         return data.numChildren() || 0;
       });
   }
