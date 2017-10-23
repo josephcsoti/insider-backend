@@ -9,7 +9,6 @@ module.exports = class Create {
 
       const lobbyID = event.params.pushkey;
         
-      // Grab the current value of what was written to the Realtime Database.
       const data = event.data.val();
       const userID = data.userID;
 
