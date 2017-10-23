@@ -40,7 +40,7 @@ module.exports = class Join {
     const userID = this.data.userID;
     const lobbyID = this.data.lobbyID;
 
-    this.join(userID, lobbyID);
+    this.join(userID, "nicknamee", lobbyID);
   }
 
   //Generically adds user to lobby
@@ -73,7 +73,7 @@ module.exports = class Join {
     return this.database.ref('/queue_lobby_result/join_unlocked/' + this.pushkey).set({
       status: status,
       time: new Date().getTime(),
-      seen: false1
+      seen: false
     })
     .then(
       console.log('Wrote result(' + status + ') for lobby('+lobbyID+')')
