@@ -8,16 +8,23 @@ module.exports = class CleanResult {
     return event => {
       // Only edit data when it is first created.
       if (!event.data.previous.exists()) {
-        return;
+        //return;
       }
       
       // Exit when the data is deleted.
       if (!event.data.exists()) {
+        console.log('Data does not exist - Exiting...')
         return;
       }
 
+      //TODO: get data with ref.once()???
+
+      console.log('*** - data: ' + event.data.val());
+
       // exit when hasnt been seen
-      if(!event.params.was_seen) {
+      if(!event.data.val()) {
+        console.log('seen: ' + event.params.seen);
+        console.log('Result not seen - Exiting...');
         return;
       }
 
