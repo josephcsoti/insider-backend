@@ -34,6 +34,7 @@ const data = {
 var users = data.users;
 var lobbies = data.lobbies;
 var pushkeys = data.pushkeys;
+var lobby_queues = data.lobby_queues;
 
 // Consts
 const LOBBY_COUNT = 2;
@@ -68,7 +69,7 @@ for(var i=LOBBY_COUNT; i<SPLIT_POINT; i++){
     }
   )
 }
-for(var i=split_point; i<users.length; i++){
+for(var i=SPLIT_POINT; i<users.length; i++){
   JoinLobby({
     lobbyID: lobbies[1],
     userID: users[i].uid},
@@ -113,3 +114,46 @@ UpdateLobbyPlayerCount(
   },
   {params: {pushkey: lobbies[1]}}
 )
+
+// Clean Seen results
+
+//Unseen result
+var result_unseen = {
+  seen: false,
+  status: true,
+  time: 11111111
+}
+//Seen result
+var result_seen = {
+  seen: true,
+  status: true,
+  time: 22222222
+}
+
+// clean lobby create
+for(var i=0; i<LOBBY_COUNT; i++) {
+  CleanLobbyResult(
+    {
+      //before: false,
+      after: true
+    },
+    {params: {
+      pushkey: lobbies[i],
+      queue_name: 'create'
+    }}
+  )
+}
+
+// clean lobby join_unlocked
+for(var i=0; i<pushkeys.length; i++) {
+  CleanLobbyResult(
+    {
+      //before: false,
+      after: true
+    },
+    {params: {
+      pushkey: pushkeys[i],
+      queue_name: 'join_unlocked'
+    }}
+  )
+}
