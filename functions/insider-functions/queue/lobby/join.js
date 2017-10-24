@@ -49,7 +49,7 @@ module.exports = class Join {
     // join list
     const p1 = this.database.ref('/lobby_players/'+lobbyID+'/'+userID).set(true)
       .then(() => {
-        console.log('Added player to lobby('+lobbyID+')')
+        console.log('Added player('+userID+') to lobby('+lobbyID+')')
         
       });
 
@@ -59,7 +59,7 @@ module.exports = class Join {
         ready: false
       })
       .then(() => {
-        console.log('Added player to lobby('+lobbyID+')')
+        console.log('Added player('+userID+') to lobby('+lobbyID+')')
         
       });
 
