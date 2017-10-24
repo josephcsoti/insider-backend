@@ -59,7 +59,7 @@ const insider = require('./insider-functions');
   );
 
   // Clean seen results
-  exports.CleanLobbyResult = functions.database.ref('/queue_lobby_result/{queue_name}/{pushkey}/was_seen').onUpdate(
+  exports.CleanLobbyResult = functions.database.ref('/queue_lobby_result/{queue_name}/{pushkey}/seen').onUpdate(
     new CleanLobbyResult(database).getFunction()
   );
 
