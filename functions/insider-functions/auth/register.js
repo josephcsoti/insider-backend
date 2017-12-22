@@ -14,7 +14,12 @@ module.exports = class Register {
       console.log('Adding new user to db: ' + email);
 
       // Push email to database
-      return this.database.ref('/users/' + uid).child('email').set(email)
+      return this.database.ref('/users/' + uid).set({
+        email: email,
+        photo: 'tracestudios.xyz/insider/1.png',
+        wins: 0,
+        losses: 0
+      })
       .then(console.log('SUCCESS | added new user to db: ' + email))
     };
   }
