@@ -7,11 +7,10 @@ module.exports = class Delete {
   getFunction() {
     return event => {
 
-      const lobbyID = event.params.pushkey;
+      const lobbyID = event.params.lobbyID;
 
       const data = event.data.val();
       const userID = data.userID;
-
 
       //verify user is admin
       return this.isUserAdmin(userID, lobbyID).then(
