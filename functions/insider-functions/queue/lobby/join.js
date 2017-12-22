@@ -1,50 +1,68 @@
 module.exports = class Join {
 
-  constructor(database, JOIN_METHOD){
+  constructor(database, MODE){
     this.database = database;
-    this.JOIN_METHOD = JOIN_METHOD;
+    this.MODE = MODE;
   }
 
   getFunction() {
     return event => {
       this.pushkey = event.params.pushkey;
       this.data = event.data.val();
-      switch(this.JOIN_METHOD){
-        case 'CODE': this.joinByCode();
+      switch(this.MODE){
+        case 'MODE_PRIVATE': this.joinPrivate();
           break;
-        case 'LINK': this.joinByLink();
+        case 'MODE_PUBLIC': this.joinPublic();
           break;
-        case 'PASSWORD': this.joinPassword();
-          break;
-        case 'UNLOCKED':
-        default: this.joinUnlocked();
+        default: return; // mode needed
       }
     };
   }
 
-  joinByCode(){
-    //
+  joinPrivate(){
+
+    //CHECKS specific
+    // if is private
+    // if code is supplied && correct
+
+    if(!this.isJoinable())
+      return; //cant join
+
+    if(!this.isCodeValid())
+      return;
+
+    let lobbyID = "12345abc"; //get lobbyID from code
+
+    join(this.data.userID, lobbyID, this.generateNickname());
   }
 
-  joinByLink(){
-    //
+  joinPublic(){
+
+    if(!this.isJoinable())
+      return; //cant join
+
+    join(this.data.userID, this.data.lobbyID, this.generateNickname());
   }
 
-  joinPassword(){
-    //
+  isCodeValid(){
+    return true;
   }
 
-  joinUnlocked(){
-    //do checks
+  isJoinable(){
 
-    const userID = this.data.userID;
-    const lobbyID = this.data.lobbyID;
+    //Generic checks
+    //enough slots
+    // is not kicked
 
-    this.join(userID, "nicknamee", lobbyID);
+    return true;
+  }
+
+  generateNickname(){
+    return "NICKNAME";
   }
 
   //Generically adds user to lobby
-  join(userID, nickname, lobbyID){
+  join(userID, lobbyID, nickname){
 
     // join list
     const p1 = this.database.ref('/lobby_players/'+lobbyID+'/'+userID).set(true)
@@ -70,7 +88,10 @@ module.exports = class Join {
   }
 
   updateQueueStatus(status, lobbyID){
-    return this.database.ref('/queue_lobby_result/join_unlocked/' + this.pushkey).set({
+
+    let url = (MODE == "MODE_PRIVATE" ? "private" : "public");
+
+    return this.database.ref('/queue_lobby_result/join_'+url+'/' + this.pushkey).set({
       status: status,
       time: new Date().getTime(),
       seen: false
