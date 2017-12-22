@@ -32,18 +32,23 @@ const insider = require('./insider-functions');
 // -- QUEUE -- //
 
   // Create Lobby
-  exports.CreateLobby = functions.database.ref('/queue_lobby/create/{pushkey}').onCreate(
+  exports.CreateLobby = functions.database.ref('/queue_lobby/create/{lobbyID}').onCreate(
     new CreateLobby(database).getFunction()
   );
 
   // Delete Lobby
-  exports.DeleteLobby = functions.database.ref('/queue_lobby/delete/{pushkey}').onCreate(
+  exports.DeleteLobby = functions.database.ref('/queue_lobby/delete/{lobbyID}').onCreate(
     new DeleteLobby(database).getFunction()
   );
 
-  // Join lobby (open)
-  exports.JoinLobby = functions.database.ref('/queue_lobby/join_unlocked/{pushkey}').onCreate(
-    new JoinLobby(database).getFunction()
+  // Join Private lobby
+  exports.JoinPrivateLobby = functions.database.ref('/queue_lobby/join_private/{pushkey}').onCreate(
+    new JoinLobby(database, "MODE_PRIVATE").getFunction()
+  );
+
+  // Join Public lobby
+  exports.JoinPublicLobby = functions.database.ref('/queue_lobby/join_public/{pushkey}').onCreate(
+     new JoinLobby(database, "MODE_PUBLIC").getFunction()
   );
 
   // Leave lobby
