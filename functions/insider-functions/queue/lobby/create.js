@@ -7,7 +7,7 @@ module.exports = class Create {
   getFunction() {
     return event => {
 
-      const lobbyID = event.params.pushkey;
+      const lobbyID = event.params.lobbyID;
         
       const data = event.data.val();
       const userID = data.userID;
@@ -16,7 +16,7 @@ module.exports = class Create {
 
       const p1 = this.getLobbyCode();
       
-      const p2 = this.database.ref('/lobby/' + lobbyID).set(true)
+      const p2 = this.database.ref('/lobby/' + lobbyID).set(false)
                   .then(this.log(true, "Add lobby list"));
 
       const p3 = this.database.ref('/lobby_admin/' + lobbyID).set(userID)
@@ -27,7 +27,7 @@ module.exports = class Create {
                   players: 0,
                   cardpack: "default",
                   cpu_players: false,
-                  locked: false,
+                  hidden: false,
                   lobby_name: "A cool lobby",
                   slots: 8
                   })
@@ -53,10 +53,7 @@ module.exports = class Create {
     const p1 = this.database.ref('/lobby_props/' + lobbyID + '/lobby_code').set(code)
                 .then(this.log(true, "Update lobby props - Code"));
 
-    const p2 = this.database.ref('/lobby_codes/' + code).set({
-                lobbyID: lobbyID,
-                password: false
-                })
+    const p2 = this.database.ref('/lobby_codes/' + code).set(lobbyID)
                   .then(this.log(true, "Add lobby code"));
 
     return Promise.all(p1,p2);
@@ -78,6 +75,14 @@ module.exports = class Create {
   }
 
   getLobbyCode(){
+    let code;
+    do{
+      code = this.generateLobbyCode();
+    } while (this.codeInUse(code))
+    return code;
+  }
+
+  generateLobbyCode(){
     const CODE_LENGTH = 5;
     const CODE_VALUES = ['0','1','2','3','4','5','6','7','8','9',
                          'a','b','c','d','e','f','g','h','i','j',
@@ -91,6 +96,10 @@ module.exports = class Create {
     
     this.log(true, 'Lobby code generated - code('+ code.toUpperCase() +')')
     return code;
+  }
+
+  codeInUse(code){
+    return false;
   }
 
   getRandomInt(){
